@@ -1,0 +1,102 @@
+name: Publish release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  set-version:
+    runs-on: ubuntu-latest
+    name: set-version
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.set-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: set version
+        id: set-version
+        run: |
+          echo Faking a Semantic Version
+          echo "version=1.$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_OUTPUT}
+
+  test:
+    needs:
+      - set-version
+    runs-on: ubuntu-latest
+    name: test
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # ratchet:actions/setup-go@v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+
+      - name: Test Go
+        run: |
+          mise test
+          mise check
+
+  release:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write # for adding new releases
+      id-token: write # for cosign
+    name: release
+    needs:
+      - set-version
+      - test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # ratchet:actions/setup-go@v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # ratchet:sigstore/cosign-installer@v4.0.0
+        with:
+          cosign-release: 'v3.0.3'
+
+      - name: Create tag
+        run: |
+          git tag $VERSION
+        env:
+          VERSION: ${{ needs.set-version.outputs.version }}
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@90a3faa9d0182683851fbfa97ca1a2cb983bfca3 # ratchet:goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: v2.3.2
+          args: release --config .goreleaser.yaml --clean --verbose
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BREW_PUSH_TOKEN: ${{ secrets.BREW_PUSH_TOKEN }}
+

@@ -1,9 +1,15 @@
 [tools]
 go = "latest"
 
-[tasks.build]
+[tasks.all]
+depends = ["compile", "test", "check"]
+
+[tasks.compile]
 description = "Build the app"
 run = "go build -o bin/gradleconfig cmd/gradleconfig/*.go"
+
+[tasks.test]
+run = "go test -v ./..."
 
 [tasks.runit]
 description = "Run the app"

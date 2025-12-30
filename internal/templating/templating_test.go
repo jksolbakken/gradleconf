@@ -1,20 +1,26 @@
 package templating
 
-import "strings"
+import (
+	"fmt"
+	"testing"
+)
 
-func BuildGradleKts(javaVersion, gradleVersion string) string {
-	withJavaVersion := strings.ReplaceAll(buildGradleKtsTemplate, "%JAVA_VERSION%", javaVersion)
-	withGradleVersion := strings.ReplaceAll(withJavaVersion, "%GRADLE_VERSION%", gradleVersion)
-	return withGradleVersion
+func TestVersionStringsEndUpInTheRightPlaceInBuildGradle(t *testing.T) {
+	actual := BuildGradleKts("123", "321")
+	if actual != buildGradleKts {
+		t.Errorf("templating didn't work")
+	}
 }
 
-func LibsVersionsToml(junitVersion, kotlinVersion string) string {
-	withKotlinVersion := strings.ReplaceAll(libsVersionsTomlTemplate, "%KOTLIN_VERSION%", kotlinVersion)
-	withJunitVersion := strings.ReplaceAll(withKotlinVersion, "%JUNIT_VERSION%", junitVersion)
-	return withJunitVersion
+func TestVersionStringsEndUpInTheRightPlaceInLibsVersion(t *testing.T) {
+	actual := LibsVersionsToml("111", "222")
+	if actual != libsVersionsToml {
+		fmt.Println(actual)
+		t.Errorf("templating didn't work")
+	}
 }
 
-var buildGradleKtsTemplate = `
+var buildGradleKts = `
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 
 group = "no.jksolbakken"
@@ -36,7 +42,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(%JAVA_VERSION%)
+    jvmToolchain(123)
 }
 
 tasks {
@@ -51,15 +57,15 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "%GRADLE_VERSION%"
+        gradleVersion = "321"
     }
 }
 `
 
-var libsVersionsTomlTemplate = `
+var libsVersionsToml = `
 [versions]
-kotlin = "%KOTLIN_VERSION%"
-junit = "%JUNIT_VERSION%"
+kotlin = "222"
+junit = "111"
 
 [libraries]
 test-junit5 = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
