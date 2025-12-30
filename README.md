@@ -4,6 +4,11 @@ This tool will configure a fresh single module Kotlin [Gradle](https://gradle.or
 
 The project will be configured to use the latest available versions of Gradle, Kotlin and JUnit.
 
+### Building
+
+- Install [MISE-EN-PLACE](https://mise.jdx.dev)
+- Run `mise build`
+
 ### Installation
 
 ```bash
