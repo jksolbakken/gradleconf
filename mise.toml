@@ -1,0 +1,19 @@
+[tools]
+go = "latest"
+
+[tasks.build]
+description = "Build the app"
+run = "go build -o bin/gradleconfig cmd/gradleconfig/*.go"
+
+[tasks.runit]
+description = "Run the app"
+run = "go run cmd/gradle-bootstrap/main.go"
+
+[tasks.check]
+depends = ["staticcheck", "vulncheck"]
+
+[tasks.staticcheck]
+run = "go run honnef.co/go/tools/cmd/staticcheck ./..."
+
+[tasks.vulncheck]
+run = "go run golang.org/x/vuln/cmd/govulncheck ./..."
