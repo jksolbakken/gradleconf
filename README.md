@@ -1,5 +1,7 @@
 # gradleconf
 
+[![GoReport](https://goreportcard.com/badge/github.com/jksolbakken/gradleconf)](https://goreportcard.com/report/github.com/jksolbakken/gradleconf)
+
 This tool will configure a fresh single module Kotlin [Gradle](https://gradle.org) project the way I usually do it, so I don't have to do it manually every time.
 
 The project will be configured to use the latest available versions of Gradle, Kotlin and JUnit.
