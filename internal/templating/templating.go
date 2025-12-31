@@ -29,7 +29,7 @@ plugins {
 }
 
 dependencies {
-    testImplementation(libs.test.junit)
+    testImplementation(libs.test.junit5)
     testImplementation(kotlin("test"))
 
     testRuntimeOnly(libs.test.junit.platform)
