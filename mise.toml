@@ -6,14 +6,14 @@ depends = ["compile", "test", "check"]
 
 [tasks.compile]
 description = "Build the app"
-run = "go build -o bin/gradleconfig cmd/gradleconfig/*.go"
+run = "go build -o bin/gradleconf cmd/gradleconfig/*.go"
 
 [tasks.test]
 run = "go test -v ./..."
 
 [tasks.runit]
 description = "Run the app"
-run = "go run cmd/gradle-bootstrap/main.go"
+run = "go run cmd/gradleconf/main.go"
 
 [tasks.check]
 depends = ["staticcheck", "vulncheck"]
