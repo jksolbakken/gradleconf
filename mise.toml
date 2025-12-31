@@ -6,7 +6,7 @@ depends = ["compile", "test", "check"]
 
 [tasks.compile]
 description = "Build the app"
-run = "go build -o bin/gradleconf cmd/gradleconfig/*.go"
+run = "go build -o bin/gradleconf cmd/gradleconf/*.go"
 
 [tasks.test]
 run = "go test -v ./..."
