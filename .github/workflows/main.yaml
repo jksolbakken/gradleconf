@@ -44,17 +44,12 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
         with:
           persist-credentials: false
-
-      - name: Set up Go
-        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # ratchet:actions/setup-go@v5.3.0
-        with:
-          go-version-file: 'go.mod'
-          cache: false
-
-      - name: Test Go
+      - uses: jdx/mise-action@c37c93293d6b742fc901e1406b8f764f6fb19dac # ratchet:jdx/mise-action@v2
+      - name: Run tests
         run: |
-          mise test
+          mise i
           mise check
+          mise test
 
   release:
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -72,12 +67,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-
-      - name: Set up Go
-        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # ratchet:actions/setup-go@v5.3.0
-        with:
-          go-version-file: 'go.mod'
-          cache: false
+      - uses: jdx/mise-action@c37c93293d6b742fc901e1406b8f764f6fb19dac # ratchet:jdx/mise-action@v2
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # ratchet:sigstore/cosign-installer@v4.0.0
@@ -89,6 +79,9 @@ jobs:
           git tag $VERSION
         env:
           VERSION: ${{ needs.set-version.outputs.version }}
+
+      - name: build
+        run: mise compile
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@90a3faa9d0182683851fbfa97ca1a2cb983bfca3 # ratchet:goreleaser/goreleaser-action@v6
