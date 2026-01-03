@@ -22,11 +22,15 @@ func main() {
 	panicIf(err)
 	libsVersionsToml := templating.LibsVersionsToml(junitVersion, kotlinVersion)
 
+	gitignore := templating.Gitignore()
+
 	cwd, err := os.Getwd()
 	panicIf(err)
 	err = writeFile(filepath.Join(cwd, "build.gradle.kts"), buildGradleKts)
 	panicIf(err)
 	err = writeFile(filepath.Join(cwd, "gradle", "libs.versions.toml"), libsVersionsToml)
+	panicIf(err)
+	err = writeFile(filepath.Join(cwd, ".gitignore"), gitignore)
 	panicIf(err)
 
 	fmt.Printf("Files written to '%s' ✅\n", cwd)
