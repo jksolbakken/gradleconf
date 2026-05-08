@@ -91,7 +91,7 @@ jobs:
         uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # ratchet:goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: v2.3.2
+          version: v2.15.4
           args: release --config .goreleaser.yaml --clean --verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
