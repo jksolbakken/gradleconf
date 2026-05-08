@@ -52,18 +52,21 @@ release:
   header: |
     ## gradleconf ({{ .Version }})
 
-brews:
+homebrew_casks:
   - repository:
       owner: jksolbakken
       name: homebrew-tap
+      branch: main
       token: "{{ .Env.BREW_PUSH_TOKEN }}"
     name: gradleconf
     homepage: "https://github.com/jksolbakken/gradleconf"
     description: "Opinionated tool for configuring single module Kotlin Gradle projects"
-    directory: Formula
-    install: |
-      bin.install "gradleconf"
-    test: |
-      assert_match version, shell_output("#{bin}/gradleconf version")
-
-
+    directory: Casks
+    binaries: 
+      - gradleconf
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/gradleconf"]
+          end
