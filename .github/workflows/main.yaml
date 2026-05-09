@@ -64,6 +64,13 @@ jobs:
       - test
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Cargowall
+        uses: code-cargo/cargowall-action@fc9644606d84536b4e59a30ad2802904f7b4ff22 # ratchet:code-cargo/cargowall-action@v1
+        mode: audit
+        sudo-lockdown: true
+        with:
+          allowed-hosts: |
+            *.github.com
       - name: Checkout latest code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # ratchet:actions/checkout@v6
         with:
