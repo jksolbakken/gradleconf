@@ -12,7 +12,7 @@ import (
 func main() {
 	latestGradleVersion, err := github.FindLatestGradleRelease()
 	panicIf(err)
-	buildGradleKts := templating.BuildGradleKts("21", latestGradleVersion)
+	buildGradleKts := templating.BuildGradleKts("25", latestGradleVersion)
 	panicIf(writeFile(filepath.Join(os.TempDir(), "build.gradle.kts"), buildGradleKts))
 
 	kotlinVersion, err := github.FindLatestKotlinRelease()
