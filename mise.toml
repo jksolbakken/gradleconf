@@ -23,3 +23,6 @@ run = "go run honnef.co/go/tools/cmd/staticcheck ./..."
 
 [tasks.vulncheck]
 run = "go run golang.org/x/vuln/cmd/govulncheck ./..."
+
+[tasks.update]
+run = "go get -u ./..."
