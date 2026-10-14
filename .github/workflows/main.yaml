@@ -23,7 +23,7 @@ jobs:
     outputs:
       version: ${{ steps.set-version.outputs.version }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
       - name: set version
@@ -41,10 +41,10 @@ jobs:
       contents: read
     steps:
       - name: Checkout latest code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # ratchet:jdx/mise-action@v4
+      - uses: jdx/mise-action@v4.3.0
         with:
           cache: false
       - name: Run tests
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Cargowall
-        uses: code-cargo/cargowall-action@7943209964cc5472fee8aa1e02cde8a2f0dd0414 # ratchet:code-cargo/cargowall-action@v1
+        uses: code-cargo/cargowall-action@v1.3.7
         with:
           mode: enforce
           sudo-lockdown: true
@@ -80,16 +80,16 @@ jobs:
             proxy.golang.org
             *.sigstore.dev
       - name: Checkout latest code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # ratchet:jdx/mise-action@v4
+      - uses: jdx/mise-action@v4.3.0
         with:
           cache: false
 
       - name: Install Cosign
-        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # ratchet:sigstore/cosign-installer@v4.1.2
+        uses: sigstore/cosign-installer@v4.1.2
         with:
           cosign-release: 'v3.1.1'
 
@@ -103,7 +103,7 @@ jobs:
         run: mise compile
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # ratchet:goreleaser/goreleaser-action@v7
+        uses: goreleaser/goreleaser-action@v7.2.3
         with:
           distribution: goreleaser
           version: v2.18.2
