@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Cargowall
-        uses: code-cargo/cargowall-action@v1.3.7
+        uses: code-cargo/cargowall-action@v1.3.9
         with:
           mode: enforce
           sudo-lockdown: true
