@@ -1,5 +1,6 @@
 [tools]
 go = "1.26"
+goreleaser = "latest"
 
 [tasks.all]
 depends = ["compile", "test", "check"]
